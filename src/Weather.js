@@ -29,7 +29,7 @@ function Weather({city, weather}) {
                     Current weather
                 </Col>
                 <Col>
-                    <div>Temp: {weather.current.temperature_2m}</div>
+                    <div>temperature: {weather.current.temperature_2m}</div>
                     <div>Wind: {weather.current.wind_speed_10m}</div>
                     <div>Precipitation: {weather.current.precipitation}</div>
                 </Col>

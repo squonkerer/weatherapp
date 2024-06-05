@@ -1,4 +1,17 @@
-.App {
-  text-align: center;
+.cold {
+  background-image: url('./freezing.jpeg');
+  background-size: cover;
+  background-position: center;
 }
 
+.moderate {
+  background-image: url('./sunny.jpg');
+  background-size: cover;
+  background-position: center;
+}
+
+.hot {
+  background-image: url('./sunnyNoClouds.jpg');
+  background-size: cover;
+  background-position: center;
+}
