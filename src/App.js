@@ -36,9 +36,11 @@ function App() {
     })
     console.log(dataObj)
     setWeather(dataObj)
+    setSelectedCity(cities[id].name);
   }
 
   const [weather, setWeather] = useState(null)
+  const [selectedCity, setSelectedCity] = useState('');
 
   return (
     <>
@@ -50,7 +52,7 @@ function App() {
           </Col>
           <Col xs={4}>
             <h1>Weather</h1>
-            <Weather weather={weather}/>
+            <Weather city={selectedCity} weather={weather}/>
           </Col>
         </Row>
       </Container>
@@ -60,3 +62,15 @@ function App() {
 
 
 export default App;
+
+/*Harjutus 6
+Ilmajaama rakenduses - näita valitud linna nime V
+Ilmajaama rakenduses - uuri vastuse andmeid ning lisa näidatavate andmete hulka midagi veel V
+
+
+Lae Ilmajaama projekt üles Netlify-sse V
+
+Extra: Kasuta paremal paanil erinevaid taustapilte:
+Kui temperatuur on alla 20 kraadi, siis näita pilti 1
+Kui temperatuur on üle 20 kraadi, siis näita pilt 2
+või vali enda tingimused ;) */

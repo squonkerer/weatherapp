@@ -1,12 +1,13 @@
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
-function Weather({weather}) {
+function Weather({city, weather}) {
     if (!weather) {
         return <h3>Click on city</h3>
     }
     return(
         <div>
+            <h2>{city}</h2>
             <Row>
                 <Col>
                     latitude
