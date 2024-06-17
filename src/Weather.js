@@ -1,12 +1,13 @@
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Container from 'react-bootstrap/Container';
 
 function Weather({city, weather}) {
     if (!weather) {
         return <h3>Click on city</h3>
     }
     return(
-        <div>
+        <Container>
             <h2>{city}</h2>
             <Row>
                 <Col>
@@ -34,7 +35,7 @@ function Weather({city, weather}) {
                     <div>Precipitation: {weather.current.precipitation}</div>
                 </Col>
             </Row>
-        </div>
+        </Container>
     )
 }
 

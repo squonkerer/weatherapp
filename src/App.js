@@ -2,41 +2,56 @@ import './App.css';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import { useState } from 'react';
-import { fetchWeatherData } from './Utilities';
+import { useState, useEffect } from 'react';
+import { fetchWeatherData, getAdressLocation } from './Utilities';
 import Weather from './Weather';
+import NewLocation from './NewLocation';
 
 function App() {
-  const [cities] = useState([
+  const [cities, setCities] = useState([
     {
       name: 'Tallinn',
-      lat: 59.38,
-      long: 28.17,
       weatherData: null,
     },
     {
       name: 'London',
-      lat: 51.50,
-      long: -0.12,
       weatherData: null,
     },
     {
       name: 'Oslo',
-      lat: 59.91,
-      long: 10.74,
       weatherData: null,
     },
   ])
 
+  const addLocation = (location) => {
+    setCities([
+      ...cities,
+      {
+        name: location,
+        weatherData: null,
+      }])
+    setIsAddingActive(false)
+    setActiveLocation(0)
+  }
+
   const [weather, setWeather] = useState(null)
   const [selectedCity, setSelectedCity] = useState('');
   const [backgroundClass, setBackgroundClass] = useState('');
+  const [isAddingActive, setIsAddingActive] = useState(false);
+  const [activeLocation, setActiveLocation] = useEffect(0);
 
-  const rowClicked = async (id) => {
-    console.log('clicked ' + cities[id].name);
+  
+
+  const rowClicked = async (index, id) => {
+    console.log('clicked ' + cities[id].name)
+    setIsAddingActive(false)
+    //loadLocationData(index)
+    setActiveLocation(index)
+    const locationData = await getAdressLocation(cities[id].name);
+    console.log(locationData)
     const dataObj = await fetchWeatherData({
-      lat: cities[id].lat,
-      long: cities[id].long,
+      lat: locationData.lat,
+      long: locationData.lng,
     });
     console.log(dataObj);
     setWeather(dataObj);
@@ -52,6 +67,22 @@ function App() {
     }
   };
 
+  useEffect(()=> {
+    loadLocationData(activeLocation)
+  }, [activeLocation])
+
+
+
+  let rightPaneJsx = (
+    <>
+      <h1>Weather</h1>
+      <Weather city={selectedCity} weather={weather} />
+    </>
+  )
+  if (isAddingActive) {
+    rightPaneJsx = <NewLocation addLocation={addLocation} />
+  }
+
   return (
     <>
       <Container>
@@ -59,10 +90,12 @@ function App() {
           <Col xs={4}>
             <h1>City</h1>
             {cities.map((city, index) => (<div onClick={() => rowClicked(index)} key={index}>{city.name}</div>))}
+            <button className='btn btn-link'
+              onClick={() => setIsAddingActive(true)}
+            >Add City</button>
           </Col>
           <Col xs={4} className={backgroundClass}>
-            <h1>Weather</h1>
-            <Weather city={selectedCity} weather={weather}/>
+            {rightPaneJsx}
           </Col>
         </Row>
       </Container>
@@ -72,16 +105,3 @@ function App() {
 
 
 export default App;
-
-/*Harjutus 6
-Ilmajaama rakenduses - näita valitud linna nime V
-Ilmajaama rakenduses - uuri vastuse andmeid ning lisa näidatavate andmete hulka midagi veel
-
-
-Lae Ilmajaama projekt üles Netlify-sse
-
-Extra: Kasuta paremal paanil erinevaid taustapilte:
-Kui temperatuur on alla 20 kraadi, siis näita pilti 1
-Kui temperatuur on üle 20 kraadi, siis näita pilt 2
-või vali enda tingimused ;) V
-*/
